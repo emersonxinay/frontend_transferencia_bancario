@@ -40,4 +40,6 @@ para agregar nuevas dependencias para conectar API y manejar rutas
 ```bash
 npm install axios react-router-dom
 ```
-
+demo
+<img src="./public/image1.png"/>
+<img src="./public/image.png"/>
