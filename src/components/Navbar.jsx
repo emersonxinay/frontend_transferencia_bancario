@@ -6,11 +6,13 @@ import { getUserDetails } from '../services/api'; // Importa la función para ob
 const Navbar = () => {
   const [userName, setUserName] = useState('');
   const [error, setError] = useState('');  // Para mostrar errores
+  const [isMenuOpen, setIsMenuOpen] = useState(false);  // Estado para controlar el menú en móviles
   const navigate = useNavigate();
   const isAuthenticated = !!localStorage.getItem('accessToken'); // Verifica si hay token
 
   // Obtener el nombre del usuario cuando el componente se monta
   useEffect(() => {
+    const path = location.pathname;
     const fetchUserDetails = async () => {
       if (!isAuthenticated) return; // No hace nada si no está autenticado
 
@@ -34,43 +36,62 @@ const Navbar = () => {
     navigate('/login'); // Redirige al login después de cerrar sesión
   };
 
+  // Maneja la apertura y cierre del menú en móvil
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  // Cierra el menú después de que el usuario haga clic en una opción
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <nav className="navbar">
-      <ul className="navbar-list">
+      <div className="navbar-header">
+        <button className="hamburger" onClick={toggleMenu}>
+          &#9776; {/* Símbolo de hamburguesa */}
+        </button>
+      </div>
+
+      {/* Menú */}
+      <ul className={`navbar-list ${isMenuOpen ? 'open' : ''}`}>
         {!isAuthenticated ? (
           <>
-            <li className="navbar-item">
+            <li className="navbar-item" onClick={closeMenu}>
               <Link to="/login" className="navbar-link">Login</Link>
             </li>
-            <li className="navbar-item">
+            <li className="navbar-item" onClick={closeMenu}>
               <Link to="/register" className="navbar-link">Register</Link>
             </li>
           </>
         ) : (
           <>
-            <li className="navbar-item">
-              <Link to="/user-details" className="navbar-link">User Details</Link>
+            <li className="navbar-item" onClick={closeMenu}>
+              <Link to="/user-details" className="navbar-link">Detalle del Usuario</Link>
             </li>
-            <li className="navbar-item">
-              <Link to="/transfer" className="navbar-link">Transfer</Link>
+            <li className="navbar-item" onClick={closeMenu}>
+              <Link to="/transfer" className="navbar-link">Transferir</Link>
             </li>
           </>
         )}
       </ul>
+
+      {/* Sección del usuario y logout */}
       <div className="navbar-user-section">
         {isAuthenticated && (
           <span className="navbar-user">Hola, {userName}</span>
         )}
         {isAuthenticated && (
           <button onClick={handleLogout} className="navbar-button">
-            Logout
+            Salir
           </button>
         )}
       </div>
-      {error && <p className="error-message">{error}</p>} {/* Muestra errores */}
+
+      {/* Muestra errores */}
+      {error && <p className="error-message">{error}</p>}
     </nav>
-
-
   );
 };
 

@@ -6,6 +6,7 @@ import Register from './components/Register';
 import UserDetails from './components/UserDetails';
 import Transfer from './components/Transfer';
 import PrivateRoute from './components/PrivateRoute';
+import PaginaNoEncontrada from './components/PaginaNoEcontrada';  // Importa la página 404
 
 const AppRoutes = () => {
   return (
@@ -32,6 +33,9 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       />
+
+      {/* Ruta para páginas no encontradas */}
+      <Route path="*" element={<PaginaNoEncontrada />} />
     </Routes>
   );
 };

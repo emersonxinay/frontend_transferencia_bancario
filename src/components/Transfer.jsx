@@ -9,6 +9,7 @@ const Transfer = () => {
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(""); // 'success' or 'error'
+  const [isProcessing, setIsProcessing] = useState(false); // Estado para manejar el procesamiento
 
   const navigate = useNavigate(); // Usar el hook useNavigate
 
@@ -21,6 +22,7 @@ const Transfer = () => {
       } catch (error) {
         console.error('Error al obtener los usuarios:', error);
         setMessage('No se pudieron cargar los usuarios');
+        setMessageType("error");
       }
     };
 
@@ -30,16 +32,42 @@ const Transfer = () => {
   // Manejo de la transferencia
   const handleTransfer = async (e) => {
     e.preventDefault();
+
+    // Validar que ambos campos estén llenos
+    if (!receiverId || !amount) {
+      setMessage('Por favor, complete todos los campos.');
+      setMessageType("error");
+      return;
+    }
+
+    setIsProcessing(true); // Iniciar el proceso de transferencia
+
     try {
       const response = await transferMoney({ receiver_id: receiverId, amount: parseFloat(amount) });
+      console.log('Respuesta de la API:', response);  // Verificar la respuesta de la API
+
       setMessage(response.message); // Mostrar el mensaje de éxito o error
+      setMessageType("success");
+
       if (response.message === 'Transferencia exitosa') {
-        setMessageType("success");
+        console.log('Transferencia exitosa');
+
+        // Limpiar los campos después de una transferencia exitosa
+        setReceiverId("");  // Limpiar el select (ID del receptor)
+        setAmount("");      // Limpiar el input (Monto)
+
+        // Verificar que los valores de los campos se hayan limpiado
+        console.log('ReceiverId:', receiverId);
+        console.log('Amount:', amount);
+
         navigate('/user-details'); // Redirigir a la página de detalles del usuario
       }
     } catch (error) {
+      console.log('Error en la transferencia:', error);
       setMessage(error.response?.data?.message || 'Error al realizar la transferencia');
       setMessageType("error");
+    } finally {
+      setIsProcessing(false); // Finalizar el proceso de transferencia
     }
   };
 
@@ -49,18 +77,21 @@ const Transfer = () => {
       <form onSubmit={handleTransfer}>
         <div className="input-group">
           <label>Selecciona el receptor:</label>
-          <select
-            value={receiverId}
-            onChange={(e) => setReceiverId(e.target.value)}
-            required
-          >
-            <option value="">Selecciona un receptor</option>
-            {users.map((user) => (
-              <option key={user.id} value={user.id}>
-                {user.name}
-              </option>
-            ))}
-          </select>
+          <div className="select-container">
+            <select
+              value={receiverId}
+              onChange={(e) => setReceiverId(e.target.value)}
+              required
+            >
+              <option value="">Selecciona un receptor</option>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
         </div>
         <div className="input-group">
           <label>Monto:</label>
@@ -73,16 +104,16 @@ const Transfer = () => {
             placeholder="Ingresa el monto"
           />
         </div>
-        <button type="submit" className="submit-btn-t">Transferir</button>
+        <button type="submit" className="submit-btn-t" disabled={isProcessing}>
+          {isProcessing ? 'Procesando...' : 'Transferir'}
+        </button>
       </form>
       {message && (
         <p className={`message ${messageType === "error" ? "error" : "success"}`}>
           {message}
         </p>
       )}
-
     </div>
-
   );
 };
 

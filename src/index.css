@@ -3,7 +3,9 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background: linear-gradient(45deg, #4e73df, #1cc88a); /* Degradado suave */
 }
+
 
 form {
   margin: 20px 0;
@@ -59,6 +61,7 @@ button:hover {
 }
 
 /* Barra de navegación */
+/* Barra de navegación */
 .navbar {
   padding: 10px 20px;
   background: linear-gradient(45deg, #4e73df, #1cc88a); /* Degradado suave */
@@ -66,13 +69,41 @@ button:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative; /* Necesario para el menú de hamburguesa */
 }
 
+.navbar-header {
+  display: flex;
+  align-items: center;
+}
+
+.hamburger {
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: none; /* Solo se muestra en móviles */
+}
+
+/* Menú en pantallas pequeñas */
 .navbar-list {
   list-style: none;
   display: flex;
   gap: 20px;
   margin: 0;
+}
+
+.navbar-list.open {
+  display: block;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(45deg, #4e73df, #1cc88a); /* Mismo fondo del navbar */
+  padding: 10px 0;
+  text-align: center;
+  z-index: 1;
 }
 
 .navbar-item {
@@ -84,10 +115,16 @@ button:hover {
   text-decoration: none;
   color: white;
   transition: color 0.3s ease;
+  padding: 0.3em;
+  border-radius: 0.5em;
+  background-color: rgba(153, 4, 145, 0.564);
+  transition: background-color 0.3s ease;
 }
 
 .navbar-link:hover {
-  color: #ffd700; /* Amarillo suave al pasar el ratón */
+  text-decoration: none;
+  background-color: rgba(10, 124, 134, 0.387);
+  padding: 0.3em;
 }
 
 .navbar-user-section {
@@ -111,10 +148,12 @@ button:hover {
   font-weight: 600;
   border-radius: 5px;
   transition: background-color 0.3s ease;
+  text-decoration: none;
 }
 
 .navbar-button:hover {
-  background-color: #d32f2f; /* Rojo más oscuro al pasar el ratón */
+  text-decoration: none;
+  background-color: #76024dd3; /* Rojo más oscuro al pasar el ratón */
 }
 
 /* Estilo de mensaje de error */
@@ -129,6 +168,7 @@ button:hover {
 /* Estilos responsivos */
 @media (max-width: 768px) {
   .navbar-list {
+    display: none; /* Oculta el menú por defecto */
     flex-direction: column;
     gap: 10px;
     align-items: center;
@@ -144,9 +184,13 @@ button:hover {
 
   .navbar-link, .navbar-button {
     padding: 12px;
+    margin: 0.3em;
+  }
+
+  .hamburger {
+    display: block; /* Muestra el ícono de hamburguesa */
   }
 }
-
 
 
 /* userDetails.css */
@@ -161,7 +205,7 @@ button:hover {
 
 .page-title {
   text-align: center;
-  color: #2c3e50;
+  color: #f3f5f7;
   font-size: 24px;
   margin-bottom: 30px;
 }
@@ -192,19 +236,9 @@ button:hover {
   padding-bottom: 5px;
 }
 
-.transaction-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}
 
-.transaction-card {
-  background-color: #fff;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
+
+
 
 .transaction-card:hover {
   transform: translateY(-5px);
@@ -416,30 +450,58 @@ p {
   margin-bottom: 8px;
 }
 
-.input-group select,
-.input-group input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 8px;
-  border: none;
-  background-color: #f9f9f9;
-  color: #333;
-  font-size: 16px;
+/* select manejando */
+/* Estilo general para el select */
+select {
+  width: 100%; /* Asegura que ocupe todo el contenedor */
+  max-width: 400px; /* Define un ancho máximo */
+  padding: 10px; /* Espaciado interno */
+  border: 1px solid #6f86d6; /* Borde con el color morado */
+  border-radius: 5px; /* Esquinas redondeadas */
+  background: #f4f4f9; /* Fondo claro */
+  color: #333; /* Color del texto */
+  font-size: 1rem; /* Tamaño del texto */
+  outline: none; /* Remueve el contorno azul predeterminado */
+  appearance: none; /* Remueve el estilo predeterminado del navegador */
   transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilo para el select */
-.input-group select {
-  cursor: pointer;
+/* Cambia el estilo al interactuar */
+select:focus {
+  border-color: #48c6ef; /* Cambia el borde al interactuar */
+  box-shadow: 0 0 6px rgba(72, 198, 239, 0.5); /* Efecto de enfoque */
 }
 
-/* Estilo cuando el usuario enfoca un input */
-.input-group input:focus,
-.input-group select:focus {
-  outline: none;
-  border: 2px solid #48c6ef; /* Borde azul al enfocar */
-  background-color: #e8f5fe;
+/* Flecha personalizada para el select */
+select::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-top-color: #6f86d6; /* Color de la flecha */
 }
+
+/* Contenedor para centrar el select */
+.select-container {
+  width: 100%; /* Ocupa todo el ancho */
+  display: flex;
+  justify-content: center; /* Centra el select horizontalmente */
+  align-items: center; /* Centra el select verticalmente */
+  margin: 20px 0; /* Espaciado superior e inferior */
+}
+
+/* Estilo para pantallas pequeñas */
+@media (max-width: 768px) {
+  select {
+    font-size: 0.9rem; /* Reduce el tamaño del texto */
+    padding: 8px; /* Reduce el padding */
+  }
+}
+
+
 
 /* Botón de transferencia */
 .submit-btn-t {
@@ -483,3 +545,89 @@ p {
   border: 2px solid #d32f2f;
 }
 
+
+/* Para pagina no encotrado  */
+/* Estilos para el componente NotFound */
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #f06, #48c6ef);
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.not-found-content {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+  animation: fadeIn 1s ease-out;
+}
+
+.not-found-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  color: #ffcc00;
+  animation: bounce 2s infinite;
+}
+
+.not-found-title {
+  font-size: 72px;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 3px;
+  animation: slideIn 0.5s ease-out;
+}
+
+.not-found-message {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 10px;
+  animation: fadeInMessage 1s ease-out;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInMessage {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 768px) {
+  .not-found-title {
+    font-size: 60px;
+  }
+
+  .not-found-icon {
+    font-size: 70px;
+  }
+}
