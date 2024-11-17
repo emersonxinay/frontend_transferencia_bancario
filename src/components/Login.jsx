@@ -21,31 +21,34 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="login-card">
       <h2>Inicio de Sesión</h2>
       <form onSubmit={handleLogin}>
-        <div>
+        <div className="input-group">
           <label>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Ingresa tu correo electrónico"
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Contraseña:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Ingresa tu contraseña"
           />
         </div>
-        <button type="submit">Iniciar Sesión</button>
+        <button type="submit" className="submit-btn-l">Iniciar Sesión</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
+
   );
 };
 

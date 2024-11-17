@@ -8,6 +8,8 @@ const Transfer = () => {
   const [receiverId, setReceiverId] = useState('');
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState(""); // 'success' or 'error'
+
   const navigate = useNavigate(); // Usar el hook useNavigate
 
   // Obtener los usuarios disponibles cuando el componente se monta
@@ -32,18 +34,20 @@ const Transfer = () => {
       const response = await transferMoney({ receiver_id: receiverId, amount: parseFloat(amount) });
       setMessage(response.message); // Mostrar el mensaje de éxito o error
       if (response.message === 'Transferencia exitosa') {
+        setMessageType("success");
         navigate('/user-details'); // Redirigir a la página de detalles del usuario
       }
     } catch (error) {
       setMessage(error.response?.data?.message || 'Error al realizar la transferencia');
+      setMessageType("error");
     }
   };
 
   return (
-    <div>
+    <div className="transfer-card">
       <h2>Realizar Transferencia</h2>
       <form onSubmit={handleTransfer}>
-        <div>
+        <div className="input-group">
           <label>Selecciona el receptor:</label>
           <select
             value={receiverId}
@@ -58,7 +62,7 @@ const Transfer = () => {
             ))}
           </select>
         </div>
-        <div>
+        <div className="input-group">
           <label>Monto:</label>
           <input
             type="number"
@@ -66,12 +70,19 @@ const Transfer = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             required
+            placeholder="Ingresa el monto"
           />
         </div>
-        <button type="submit">Transferir</button>
+        <button type="submit" className="submit-btn-t">Transferir</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && (
+        <p className={`message ${messageType === "error" ? "error" : "success"}`}>
+          {message}
+        </p>
+      )}
+
     </div>
+
   );
 };
 

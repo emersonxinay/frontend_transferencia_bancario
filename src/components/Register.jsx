@@ -22,40 +22,45 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <div className="register-card">
       <h2>Registro</h2>
+      <p>Si eres usuario nuevo te regalamos 100 dólares.</p>
       <form onSubmit={handleRegister}>
-        <div>
+        <div className="input-group">
           <label>Nombre:</label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            placeholder="Ingresa tu nombre"
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Email:</label>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Ingresa tu correo electrónico"
           />
         </div>
-        <div>
+        <div className="input-group">
           <label>Contraseña:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Ingresa una contraseña"
           />
         </div>
-        <button type="submit">Registrarse</button>
+        <button type="submit" className="submit-btn-r">Registrarse</button>
       </form>
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
     </div>
+
   );
 };
 

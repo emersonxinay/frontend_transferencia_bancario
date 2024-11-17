@@ -18,8 +18,11 @@ const Navbar = () => {
         const userDetails = await getUserDetails(); // Obtén los detalles del usuario desde la API
         setUserName(userDetails.name); // Guarda el nombre del usuario en el estado
       } catch (error) {
-        setError('Error al obtener los detalles del usuario: ' + error.message);
-        console.error('Error al obtener los detalles del usuario:', error);
+        setError('Ya venció su inicio de sesión, vuelve a iniciar: ');
+        console.error('Ya venció su inicio de sesión, vuelve a iniciar:', error);
+        setTimeout(() => {
+          setError(""); // Limpia el mensaje
+        }, 5000);
       }
     };
 
@@ -32,38 +35,42 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ padding: '10px', borderBottom: '1px solid #ccc' }}>
-      <ul style={{ listStyle: 'none', display: 'flex', gap: '15px' }}>
+    <nav className="navbar">
+      <ul className="navbar-list">
         {!isAuthenticated ? (
           <>
-            <li>
-              <Link to="/login">Login</Link>
+            <li className="navbar-item">
+              <Link to="/login" className="navbar-link">Login</Link>
             </li>
-            <li>
-              <Link to="/register">Register</Link>
+            <li className="navbar-item">
+              <Link to="/register" className="navbar-link">Register</Link>
             </li>
           </>
         ) : (
           <>
-            <li>
-              <Link to="/user-details">User Details</Link>
+            <li className="navbar-item">
+              <Link to="/user-details" className="navbar-link">User Details</Link>
             </li>
-            <li>
-              <Link to="/transfer">Transfer</Link>
-            </li>
-            <li>
-              <span>Hola, {userName}</span> {/* Mostrar el nombre del usuario */}
-            </li>
-            <li>
-              <button onClick={handleLogout} style={{ cursor: 'pointer' }}>
-                Logout
-              </button>
+            <li className="navbar-item">
+              <Link to="/transfer" className="navbar-link">Transfer</Link>
             </li>
           </>
         )}
       </ul>
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Muestra errores */}
+      <div className="navbar-user-section">
+        {isAuthenticated && (
+          <span className="navbar-user">Hola, {userName}</span>
+        )}
+        {isAuthenticated && (
+          <button onClick={handleLogout} className="navbar-button">
+            Logout
+          </button>
+        )}
+      </div>
+      {error && <p className="error-message">{error}</p>} {/* Muestra errores */}
     </nav>
+
+
   );
 };
 
