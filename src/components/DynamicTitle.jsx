@@ -8,23 +8,17 @@ const DynamicTitle = () => {
   useEffect(() => {
     const path = location.pathname;
 
-    // Cambiar el título según la ruta
-    if (path === '/') {
-      document.title = 'Página Principal - CashCompi';
-    } else if (path === '/login') {
-      document.title = 'Iniciar Sesión - CashCompi';
-    } else if (path === '/register') {
-      document.title = 'Registrarse - CashCompi';
-    }
-    else if (path === '/transfer') {
-      document.title = 'Transferencia - CashCompi';
-    }
-    else if (path === '/user-details') {
-      document.title = 'Detalles del Usuario - CashCompi';
-    }
-    else {
-      document.title = 'Pagina no Econtrada - CashCompi';
-    }
+    // Objeto que mapea las rutas a los títulos correspondientes
+    const titleMap = {
+      '/': 'Página Principal - CashCompi',
+      '/login': 'Iniciar Sesión - CashCompi',
+      '/register': 'Registrarse - CashCompi',
+      '/transfer': 'Transferencia - CashCompi',
+      '/user-details': 'Detalles del Usuario - CashCompi',
+    };
+
+    // Asignar el título según la ruta, o un valor por defecto si la ruta no está en el objeto
+    document.title = titleMap[path] || 'Página no Encontrada - CashCompi';
   }, [location]);
 
   return null; // No renderiza nada, solo actualiza el título
