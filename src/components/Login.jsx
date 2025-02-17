@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="login-card">
-      <h2>Inicio de Sesión</h2>
+      <h2 >Inicio de Sesión</h2>
       <form onSubmit={handleLogin}>
         <div className="input-group">
           <label>Email:</label>
@@ -31,17 +31,17 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="Ingresa tu correo electrónico"
+            placeholder="Ingrese su correo"
           />
         </div>
         <div className="input-group">
-          <label>Contraseña:</label>
+          <label>Password:</label>
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder="Ingresa tu contraseña"
+            placeholder="Ingresa tu password"
           />
         </div>
         <button type="submit" className="submit-btn-l">Iniciar Sesión</button>

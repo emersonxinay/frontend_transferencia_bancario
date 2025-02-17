@@ -343,7 +343,7 @@ p {
   max-width: 400px;
   margin: 50px auto;
   padding: 30px;
-  background: linear-gradient(to bottom right, #590646, #feb47b); /* Degradado cálido */
+  background: linear-gradient(to bottom right, #1907e1, #0bf167); /* Degradado cálido */
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más prominente */
   color: #fff;
